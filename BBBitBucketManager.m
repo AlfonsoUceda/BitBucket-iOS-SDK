@@ -309,7 +309,7 @@
 #pragma mark - Repositories Endpoint
 #pragma mark - Changesets Resource
 
-- (void)getListChangesets:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
+- (void)getListChangesetsForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
 {
     NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
 #pragma mark TODO tener cuidado si params es incorrecto;
@@ -400,7 +400,7 @@
 
 #pragma mark - Deploy Keys Resource
 
-- (void)getDeployKeys:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBArrayBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
+- (void)getDeployKeysForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBArrayBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
 {
     NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
     [stringURL appendFormat:@"/%@/%@/deploy-keys", accountName, repoSlug];
@@ -429,7 +429,7 @@
 
 #pragma mark - Events Resource
 
-- (void)getListEvents:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
+- (void)getListEventsForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
 {
     NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
     [stringURL appendFormat:@"/%@/%@/events", accountName, repoSlug];
@@ -448,6 +448,29 @@
         errorBlock(error);
     }];
 }
+
+#pragma mark - Followers Resource
+
+- (void)getListFollowersForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
+{
+    NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
+    [stringURL appendFormat:@"/%@/%@/followers", accountName, repoSlug];
+    
+    NSMutableDictionary *dictionary = nil;
+    if (paramsDictionary)
+    {
+        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+        [dictionary setObject:paramsDictionary forKey:kParams];
+    }
+    
+    [self createRequestWithStringURL:stringURL dictionary:dictionary completionBlock:^(NSData *data) {
+        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        completionBlock(dictionary);
+    } errorBlock:^(NSError *error) {
+        errorBlock(error);
+    }];
+}
+
 
 #pragma mark - Connection
 
