@@ -9,10 +9,12 @@
 @class BBUser;
 @class BBEmail;
 @class BBChangeset;
+@class BBSSHKey;
 
 typedef void (^BBUserBlock)(BBUser* user);
 typedef void (^BBEmailBlock)(BBEmail* email);
 typedef void (^BBChangesetBlock)(BBChangeset* changesset);
+typedef void (^BBSSHKeyBlock)(BBSSHKey* sshKey);
 
 typedef void(^BBCompletionBlock)(NSData *data);
 typedef void(^BBErrorBlock)(NSError *error);

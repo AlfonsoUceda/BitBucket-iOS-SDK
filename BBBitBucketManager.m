@@ -11,6 +11,7 @@
 #import "BBUser.h"
 #import "BBEmail.h"
 #import "BBChangeset.h"
+#import "BBSSHKey.h"
 #import "NSString+Encode.h"
 
 #define API_ENDPOINT @"https://api.bitbucket.org/1.0"
@@ -397,6 +398,56 @@
     }];
 }
 
+#pragma mark - Deploy Keys Resource
+
+- (void)getDeployKeys:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBArrayBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
+{
+    NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
+    [stringURL appendFormat:@"/%@/%@/deploy-keys", accountName, repoSlug];
+    
+    [self createRequestWithStringURL:stringURL dictionary:nil completionBlock:^(NSData *data) {
+        NSArray *array = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        completionBlock(array);
+    } errorBlock:^(NSError *error) {
+        errorBlock(error);
+    }];
+}
+
+- (void)getDeployKey:(NSString*)deployKey forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBSSHKeyBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
+{
+    NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
+    [stringURL appendFormat:@"/%@/%@/deploy-keys", accountName, repoSlug];
+    
+    [self createRequestWithStringURL:stringURL dictionary:nil completionBlock:^(NSData *data) {
+        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        BBSSHKey *sshKey = [[BBSSHKey alloc] initWithJSONDictionary:dictionary];
+        completionBlock(sshKey);
+    } errorBlock:^(NSError *error) {
+        errorBlock(error);
+    }];
+}
+
+#pragma mark - Events Resource
+
+- (void)getListEvents:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
+{
+    NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
+    [stringURL appendFormat:@"/%@/%@/events", accountName, repoSlug];
+    
+    NSMutableDictionary *dictionary = nil;
+    if (paramsDictionary)
+    {
+        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+        [dictionary setObject:paramsDictionary forKey:kParams];
+    }
+    
+    [self createRequestWithStringURL:stringURL dictionary:dictionary completionBlock:^(NSData *data) {
+        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        completionBlock(dictionary);
+    } errorBlock:^(NSError *error) {
+        errorBlock(error);
+    }];
+}
 
 #pragma mark - Connection
 

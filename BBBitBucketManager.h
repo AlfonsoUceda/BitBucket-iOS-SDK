@@ -66,5 +66,13 @@
 - (void)getchangesetLikes:(NSString*)node forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBArrayBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 - (void)getchangesetComments:(NSString*)node forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBArrayBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
+#pragma mark - Deploy Keys Resource
+
+- (void)getDeployKeys:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBArrayBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+- (void)getDeployKey:(NSString*)deployKey forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBSSHKeyBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+#pragma mark - Events Resource
+
+- (void)getListEvents:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
 @end
