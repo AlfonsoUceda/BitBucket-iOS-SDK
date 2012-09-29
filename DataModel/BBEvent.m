@@ -73,7 +73,7 @@
 
 -(NSString*)description
 {
-    NSMutableString *descriptionUser = [NSMutableString stringWithFormat:@"\node: %@\n", self.node];
+    NSMutableString *descriptionUser = [NSMutableString stringWithFormat:@"\nnode: %@\n", self.node];
     [descriptionUser appendFormat:@"description: %@\n", self.description];
     [descriptionUser appendFormat:@"repository: %@\n", self.repository];
     [descriptionUser appendFormat:@"created_on: %@\n", self.createdOn];

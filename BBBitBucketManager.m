@@ -12,6 +12,7 @@
 #import "BBEmail.h"
 #import "BBChangeset.h"
 #import "BBSSHKey.h"
+#import "BBIssue.h"
 #import "NSString+Encode.h"
 
 #define API_ENDPOINT @"https://api.bitbucket.org/1.0"
@@ -258,7 +259,6 @@
 {
     NSMutableString *stringURL = [self appendToAPIEndpoint:USERS_ENDPOINT];
     [stringURL appendFormat:@"/%@/ssh-keys", accountName];
-
     
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:@{ kHTTPVerb : @"POST" }];
     [dictionary setObject:paramsDictionary forKey:kParams];
@@ -315,12 +315,8 @@
 #pragma mark TODO tener cuidado si params es incorrecto;
     [stringURL appendFormat:@"/%@/%@/changesets", accountName, repoSlug];
     
-    NSMutableDictionary *dictionary = nil;
-    if (paramsDictionary)
-    {
-        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-        [dictionary setObject:paramsDictionary forKey:kParams];
-    }
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [dictionary setObject:paramsDictionary forKey:kParams];
     
     [self createRequestWithStringURL:stringURL dictionary:dictionary completionBlock:^(NSData *data) {
         NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
@@ -434,12 +430,8 @@
     NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
     [stringURL appendFormat:@"/%@/%@/events", accountName, repoSlug];
     
-    NSMutableDictionary *dictionary = nil;
-    if (paramsDictionary)
-    {
-        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-        [dictionary setObject:paramsDictionary forKey:kParams];
-    }
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [dictionary setObject:paramsDictionary forKey:kParams];
     
     [self createRequestWithStringURL:stringURL dictionary:dictionary completionBlock:^(NSData *data) {
         NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
@@ -456,12 +448,8 @@
     NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
     [stringURL appendFormat:@"/%@/%@/followers", accountName, repoSlug];
     
-    NSMutableDictionary *dictionary = nil;
-    if (paramsDictionary)
-    {
-        NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-        [dictionary setObject:paramsDictionary forKey:kParams];
-    }
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [dictionary setObject:paramsDictionary forKey:kParams];
     
     [self createRequestWithStringURL:stringURL dictionary:dictionary completionBlock:^(NSData *data) {
         NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
@@ -470,6 +458,52 @@
         errorBlock(error);
     }];
 }
+
+#pragma mark - Issues Resource
+
+- (void)getListIssuesForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
+{
+    NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
+    [stringURL appendFormat:@"/%@/%@/issues", accountName, repoSlug];
+    
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [dictionary setObject:paramsDictionary forKey:kParams];
+    
+    [self createRequestWithStringURL:stringURL dictionary:dictionary completionBlock:^(NSData *data) {
+        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        completionBlock(dictionary);
+    } errorBlock:^(NSError *error) {
+        errorBlock(error);
+    }];
+}
+
+- (void)getIssue:(NSString*)issueId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBIssueBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
+{
+    NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
+    [stringURL appendFormat:@"/%@/%@/issues/%@", accountName, repoSlug, issueId];
+    
+    [self createRequestWithStringURL:stringURL dictionary:nil completionBlock:^(NSData *data) {
+        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        BBIssue *issue = [[BBIssue alloc] initWithJSONDictionary:dictionary];
+        completionBlock(issue);
+    } errorBlock:^(NSError *error) {
+        errorBlock(error);
+    }];
+}
+
+- (void)getListFollowersForIssue:(NSString*)issueId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock
+{
+    NSMutableString *stringURL = [self appendToAPIEndpoint:REPOSITORIES_ENDPOINT];
+    [stringURL appendFormat:@"/%@/%@/issues/%@", accountName, repoSlug, issueId];
+    
+    [self createRequestWithStringURL:stringURL dictionary:nil completionBlock:^(NSData *data) {
+        NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        completionBlock(dictionary);
+    } errorBlock:^(NSError *error) {
+        errorBlock(error);
+    }];
+}
+
 
 
 #pragma mark - Connection

@@ -95,5 +95,12 @@
 
 - (void)getListFollowersForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
+#pragma mark - Issues Resource
+
+- (void)getListIssuesForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+- (void)getIssue:(NSString*)issueId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBIssueBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+- (void)getListFollowersForIssue:(NSString*)issueId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
 @end
