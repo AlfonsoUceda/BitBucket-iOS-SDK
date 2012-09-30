@@ -29,7 +29,7 @@
 
 
 #pragma mark - Users Endpoint
-#pragma mark - Accounts Resource
+#pragma mark Accounts Resource
 
 - (void)getUserAccount:(NSString*)accountNameOrEmail completionBlock:(BBUserBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
@@ -37,7 +37,7 @@
 
 - (void)getUserFollowers:(NSString*)accountName completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
-#pragma mark - Emails Resource
+#pragma mark Emails Resource
 
 - (void)getListEmails:(NSString*)accountName completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
@@ -47,15 +47,15 @@
 
 - (void)updateEmail:(NSString*)email forAccount:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary  completionBlock:(BBEmailBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
-#pragma mark - Invitations Resource
+#pragma mark Invitations Resource
 
 - (void)getListInvitations:(NSString*)accountName completionBlock:(BBArrayBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
-#pragma mark - Privileges Resource
+#pragma mark Privileges Resource
 
 - (void)getListPrivileges:(NSString*)accountName completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
-#pragma mark - SSH Keys Resource
+#pragma mark SSH Keys Resource
 
 - (void)getListSSHKeysForAccount:(NSString*)accountName completionBlock:(BBArrayBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
@@ -67,7 +67,7 @@
 
 
 #pragma mark - Repositories Endpoint
-#pragma mark - Changesets Resource
+#pragma mark Changesets Resource
 
 - (void)getListChangesetsForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
@@ -81,26 +81,49 @@
 
 - (void)getchangesetComments:(NSString*)node forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBArrayBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
-#pragma mark - Deploy Keys Resource
+#pragma mark Deploy Keys Resource
 
 - (void)getDeployKeysForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBArrayBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
 - (void)getDeployKey:(NSString*)deployKey forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBSSHKeyBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
-#pragma mark - Events Resource
+#pragma mark Events Resource
 
 - (void)getListEventsForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
-#pragma mark - Followers Resource
+#pragma mark Followers Resource
 
 - (void)getListFollowersForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
-#pragma mark - Issues Resource
+#pragma mark Issues Resource
 
 - (void)getListIssuesForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName dictionary:(NSDictionary*)paramsDictionary completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
 - (void)getIssue:(NSString*)issueId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBIssueBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
 
 - (void)getListFollowersForIssue:(NSString*)issueId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+- (void)getListCommentsForIssue:(NSString*)issueId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+- (void)getComment:(NSString*)commentId forIssue:(NSString*)issueId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBCommentBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+- (void)getListComponentsForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+- (void)getComponent:(NSString*)componentId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBCVMBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+- (void)getListVersionsForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+- (void)getVersion:(NSString*)versionId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBCVMBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+- (void)getListMilestonesForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+- (void)getMilestone:(NSString*)milestoneId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBCVMBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+#pragma mark Links Resource
+
+- (void)getListLinksForRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBDictionaryBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
+- (void)getLink:(NSString*)linkId forRepo:(NSString*)repoSlug forAccountName:(NSString*)accountName completionBlock:(BBLinkBlock)completionBlock errorBlock:(BBErrorBlock)errorBlock;
+
 
 @end
